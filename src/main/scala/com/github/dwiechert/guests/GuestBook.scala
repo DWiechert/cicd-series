@@ -62,22 +62,22 @@ class GuestBook extends CICDRoute {
 
 	private def deleteGuestRoute(): Route = {
 		delete {
-			path("guests") {
-				entity(as[Guest]) { guest =>
-					val maybeDelete = deleteGuest(guest)
-					onSuccess(maybeDelete) {
-						case true => complete(StatusCodes.NoContent)
-						case false => complete(StatusCodes.NotFound)
-					}
+			path("guests" / Segment) { (name) =>
+				val maybeDelete = deleteGuest(name)
+				onSuccess(maybeDelete) {
+					case true => complete(StatusCodes.NoContent)
+					case false => complete(StatusCodes.NotFound)
 				}
 			}
 		}
 	}
 
-	private def deleteGuest(guest: Guest): Future[Boolean] = {
-		if (guests.contains(guest)) {
-			guests -= guest
+	private def deleteGuest(name: String): Future[Boolean] = {
+		val found = guests.filter(_.name == name)
+		if (found.isEmpty) Future.successful(false)
+		else {
+			found.foreach(f => guests -= f)
 			Future.successful(true)
-		} else Future.successful(false)
+		}
 	}
 }
