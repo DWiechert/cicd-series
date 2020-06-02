@@ -62,7 +62,7 @@ class GuestBook extends CICDRoute {
 
 	private def deleteGuestRoute(): Route = {
 		delete {
-			path("guests" / Segment) { (name) =>
+			path("guests" / Segment) { name =>
 				val maybeDelete = deleteGuest(name)
 				onSuccess(maybeDelete) {
 					case true => complete(StatusCodes.NoContent)

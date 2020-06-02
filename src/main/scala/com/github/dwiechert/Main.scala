@@ -6,17 +6,17 @@ import akka.http.scaladsl.server.Directives._
 import akka.stream.ActorMaterializer
 import com.github.dwiechert.guests.GuestBook
 import com.github.dwiechert.health.HealthCheck
-import com.github.dwiechert.index.Index
 
+import scala.concurrent.ExecutionContextExecutor
 import scala.util.{Failure, Success}
 
 object Main {
 	def main(args: Array[String]): Unit = {
-		implicit val system = ActorSystem("cicd-system")
-		implicit val materializer = ActorMaterializer
-		implicit val executionContext = system.dispatcher
+		implicit val system: ActorSystem = ActorSystem("cicd-system")
+		implicit val materializer: ActorMaterializer.type = ActorMaterializer
+		implicit val executionContext: ExecutionContextExecutor = system.dispatcher
 
-		val routes = new Index().route ~ new HealthCheck().route ~ new GuestBook().route
+		val routes = new HealthCheck().route ~ new GuestBook().route
 
 		val port = system.settings.config.getInt("cicd-system.config.port")
 		val host = system.settings.config.getString("cicd-system.config.host")
