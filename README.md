@@ -1,6 +1,9 @@
 # cicd-series
 Simple REST service with full CI/CD.
 
+Blog posts about service can be found on:
+- [Blogger](https://danwiechert.blogspot.com/)
+
 To run:
 ```
 sbt run
