@@ -9,9 +9,9 @@ class HealthCheckSpecs extends FlatSpec with Matchers with ScalatestRouteTest {
 
 	val healthCheck = new HealthCheck
 
-	it should "return OK for the health check" in {
+	it should "return OK for /health" in {
 		Get("/health") ~> healthCheck.route ~> check {
-			response.status shouldBe StatusCodes.OK
+			status shouldBe StatusCodes.OK
 		}
 	}
 }
