@@ -12,8 +12,9 @@ jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
+    runs-on: ubuntu-latest
     # https://hub.docker.com/r/hseeberger/scala-sbt/
-    runs-on: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
+    container: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
