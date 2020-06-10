@@ -1,9 +1,10 @@
-name: SBT CI
+name: Test CI
 
-# Run SBT tests on pushes and pull requests to master branch
+# Run tests on pull requests to master branch
 on:
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
