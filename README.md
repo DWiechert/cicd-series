@@ -4,9 +4,15 @@ Simple REST service with full CI/CD.
 Blog posts about service can be found on:
 - [Blogger](https://danwiechert.blogspot.com/)
 
-To run:
+Run with sbt:
 ```
 sbt run
+```
+
+Run with artifact:
+```
+sbt assembly
+java -jar target/scala-2.13/cicd-series-assembly-0.1.0-SNAPSHOT.jar
 ```
 
 Verify service is running:
