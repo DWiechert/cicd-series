@@ -65,6 +65,8 @@ jobs:
       # Download artifact
       - name: Download Artifact
         uses: actions/download-artifact@v1
+        with:
+          name: cicd-series-assembly.jar
 
       # Verify artifact
       - name: List Files
