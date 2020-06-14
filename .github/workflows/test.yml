@@ -20,7 +20,8 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout Repo
+        uses: actions/checkout@v2
 
       # Run unit tests
       - name: Run Unit Tests
@@ -38,7 +39,34 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - name: Checkout Repo
+        uses: actions/checkout@v2
 
+      # Assembly artifact
       - name: Create Assembly
         run: sbt "clean;compile;assembly"
+
+      # Upload jar as build artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: cicd-series-assembly.jar
+          path: target/scala-2.13/cicd-series-assembly-0.1.0-SNAPSHOT.jar
+
+  dockerize:
+    runs-on: ubuntu-latest
+    container: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      # Download artifact
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+
+      # Verify artifact
+      - name: List Files
+        shell: bash
+        run: |
+          ls -al
