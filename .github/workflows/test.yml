@@ -1,0 +1,75 @@
+name: Test CI
+
+# Run tests on pull requests to master branch
+on:
+  pull_request:
+    branches:
+      - master
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  test:
+    # The type of runner that the job will run on
+    # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    runs-on: ubuntu-latest
+    # The specific container to use
+    # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idcontainer
+    # https://hub.docker.com/r/hseeberger/scala-sbt/
+    container: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      # Run unit tests
+      - name: Run Unit Tests
+        run: sbt "clean;compile;test"
+
+  assemble:
+    # The type of runner that the job will run on
+    # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on
+    runs-on: ubuntu-latest
+    # The specific container to use
+    # https://help.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idcontainer
+    # https://hub.docker.com/r/hseeberger/scala-sbt/
+    container: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      # Assembly artifact
+      - name: Create Assembly
+        run: sbt "clean;compile;assembly"
+
+      # Upload jar as build artifact
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: cicd-series-assembly.jar
+          path: target/scala-2.13/cicd-series-assembly-0.1.0-SNAPSHOT.jar
+
+  dockerize:
+    runs-on: ubuntu-latest
+    container: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
+    needs: assemble
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      # Download artifact
+      - name: Download Artifact
+        uses: actions/download-artifact@v1
+        with:
+          name: cicd-series-assembly.jar
+
+      # Verify artifact
+      - name: List Files
+        shell: bash
+        run: |
+          ls -al
