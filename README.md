@@ -56,6 +56,6 @@ curl -H "Content-Type: application/json" -X GET http://127.0.0.1:8080/guests
 
 Run PATs:
 ```
-pip install requests behave
+pip install -r requirements.txt
 behave
 ```

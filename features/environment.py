@@ -16,6 +16,6 @@ def after_all(context):
     print('Server terminated')
 
 def before_scenario(context, scenario):
-    url = 'http://localhost:8080/guests/all'
+    url = 'http://localhost:8080/clear'
     response = requests.delete(url)
     assert response.status_code == 204

@@ -102,7 +102,7 @@ class GuestBookSpecs extends FlatSpec with Matchers with ScalatestRouteTest with
 			entityAs[Guests] shouldBe Guests(List(guest, otherGuest))
 		}
 
-		Delete("/guests/all") ~> guestBook.route ~> check {
+		Delete("/clear") ~> guestBook.route ~> check {
 			status shouldBe StatusCodes.NoContent
 		}
 
