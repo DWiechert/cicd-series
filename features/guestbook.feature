@@ -1,4 +1,4 @@
-Feature: verify guestbook functionality
+Feature: verify guest book functionality
 
   Scenario: return no guests by default
     Given an empty guestbook

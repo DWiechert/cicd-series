@@ -1,4 +1,4 @@
-Feature: verify service health
+Feature: verify health check functionality
 
   Scenario: return OK for /health
     Given we have a service running
