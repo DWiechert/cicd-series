@@ -53,7 +53,7 @@ jobs:
           name: cicd-series-assembly.jar
           path: target/scala-2.13/cicd-series-assembly-0.1.0-SNAPSHOT.jar
 
-  verify image:
+  verify_image:
     runs-on: ubuntu-latest
     container: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
     needs: assemble
