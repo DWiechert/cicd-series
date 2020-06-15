@@ -1,9 +1,11 @@
-Feature: verify guest book functionality
+Feature: verify functionality of /guests
+
+  # https://stackoverflow.com/questions/19392492/is-it-ok-to-have-multiple-groups-of-given-when-then-in-a-single-gherkin-scenario
 
   Scenario: return no guests by default
     Given an empty guestbook
     When we query /guests
-    Then an empty list should be returned
+    Then the response should be empty
 
   Scenario: add a guest
     Given an empty guestbook
