@@ -73,11 +73,16 @@ class GuestBook extends CICDRoute {
 	}
 
 	private def deleteGuest(name: String): Future[Boolean] = {
-		val found = guests.filter(_.name == name)
-		if (found.isEmpty) Future.successful(false)
-		else {
-			found.foreach(f => guests -= f)
+		if ("all" == name) {
+			guests.clear()
 			Future.successful(true)
+		} else {
+			val found = guests.filter(_.name == name)
+			if (found.isEmpty) Future.successful(false)
+			else {
+				found.foreach(f => guests -= f)
+				Future.successful(true)
+			}
 		}
 	}
 }

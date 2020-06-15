@@ -28,7 +28,7 @@ Example workflow of:
 5. Query all guests (should be empty)
 
 ```
-curl -H "Content-Type: application/json" -X GET http://127.0.0.1:8080/guests
+curl -H "Content-Type: application/json" -X GET localhost:8080/guests
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100    13  100    13    0     0     63      0 --:--:-- --:--:-- --:--:--    63{"guests":[]}
@@ -52,4 +52,10 @@ curl -H "Content-Type: application/json" -X GET http://127.0.0.1:8080/guests
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
 100    13  100    13    0     0   2600      0 --:--:-- --:--:-- --:--:--  2600{"guests":[]}
+```
+
+Run PATs:
+```
+pip install requests behave
+behave
 ```

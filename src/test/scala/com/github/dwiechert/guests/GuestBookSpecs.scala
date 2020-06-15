@@ -81,4 +81,35 @@ class GuestBookSpecs extends FlatSpec with Matchers with ScalatestRouteTest with
 			entityAs[Guests] shouldBe Guests(List())
 		}
 	}
+
+	it should "clear all guests" in {
+		val guestBook = new GuestBook
+
+		Post("/guests").withEntity(guestEntity) ~> guestBook.route ~> check {
+			status shouldBe StatusCodes.Created
+		}
+
+		val otherGuest = Guest("Other", 31)
+		val otherGuestEntity = Marshal(otherGuest).to[MessageEntity].futureValue
+
+		Post("/guests").withEntity(otherGuestEntity) ~> guestBook.route ~> check {
+			status shouldBe StatusCodes.Created
+		}
+
+		Get("/guests") ~> guestBook.route ~> check {
+			status shouldBe StatusCodes.OK
+			contentType shouldBe ContentTypes.`application/json`
+			entityAs[Guests] shouldBe Guests(List(guest, otherGuest))
+		}
+
+		Delete("/guests/all") ~> guestBook.route ~> check {
+			status shouldBe StatusCodes.NoContent
+		}
+
+		Get("/guests") ~> guestBook.route ~> check {
+			status shouldBe StatusCodes.OK
+			contentType shouldBe ContentTypes.`application/json`
+			entityAs[Guests] shouldBe Guests(List())
+		}
+	}
 }
