@@ -67,11 +67,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: cicd-series-assembly.jar
-          path: cicd-series-assembly.jar
 
       # Verify artifact
       - name: List Files
         run: ls -al
+
+      - name: Rename Artifact
+        run: mv cicd-series-assembly-*.jar cicd-series-assembly.jar
 
       - name: Change Permissions
         run: chmod a+rx cicd-series-assembly.jar
