@@ -78,4 +78,4 @@ jobs:
 
       # Run behave tests
       - name: Run PATs
-        shell: behave
+        run: behave
