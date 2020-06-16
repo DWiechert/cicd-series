@@ -55,7 +55,7 @@ jobs:
 
   pats:
     runs-on: ubuntu-latest
-    container: openkbs/jre-mvn-py3
+    container: openkbs/jre-mvn-py3:v1.0.6
     needs: assemble
 
     steps:
