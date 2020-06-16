@@ -48,7 +48,7 @@ jobs:
 
       # Upload jar as build artifact
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: cicd-series-assembly.jar
           path: target/scala-2.13/cicd-series-assembly-0.1.0-SNAPSHOT.jar
@@ -64,7 +64,7 @@ jobs:
 
       # Download artifact
       - name: Download Artifact
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v2
         with:
           name: cicd-series-assembly.jar
 
