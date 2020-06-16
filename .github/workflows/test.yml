@@ -53,9 +53,9 @@ jobs:
           name: cicd-series-assembly.jar
           path: target/scala-2.13/cicd-series-assembly-0.1.0-SNAPSHOT.jar
 
-  verify_image:
+  pats:
     runs-on: ubuntu-latest
-    container: hseeberger/scala-sbt:8u222_1.3.5_2.13.1
+    container: openkbs/jre-mvn-py3
     needs: assemble
 
     steps:
@@ -70,6 +70,12 @@ jobs:
 
       # Verify artifact
       - name: List Files
-        shell: bash
-        run: |
-          ls -al
+        run: ls -al
+
+      # Install python dependencies
+      - name: Install Dependencies
+        run: pip install -r requirements.txt
+
+      # Run behave tests
+      - name: Run PATs
+        shell: behave
