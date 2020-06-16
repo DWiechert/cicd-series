@@ -68,6 +68,10 @@ jobs:
         with:
           name: cicd-series-assembly.jar
 
+      # Verify artifact
+      - name: List Files
+        run: ls -al
+
       - name: Change Permissions
         run: chmod a+rx cicd-series-assembly.jar
 
