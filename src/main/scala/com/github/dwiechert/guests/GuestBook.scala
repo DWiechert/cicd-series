@@ -28,7 +28,7 @@ class GuestBook extends CICDRoute {
 
 	private val guests = new ListBuffer[Guest]
 
-	override def route: Route = listGuestsRoute() ~ addGuestRoute() ~ deleteGuestRoute()
+	override def route: Route = listGuestsRoute() ~ addGuestRoute() ~ deleteGuestRoute() ~ clearRoute()
 
 	private def listGuestsRoute(): Route = {
 		path("guests") {
@@ -39,8 +39,8 @@ class GuestBook extends CICDRoute {
 	}
 
 	private def addGuestRoute(): Route = {
-		post {
-			path("guests") {
+		path("guests") {
+			post {
 				entity(as[Guest]) { guest =>
 					val maybeAdd = addGuest(guest)
 					onSuccess(maybeAdd) {
@@ -61,8 +61,8 @@ class GuestBook extends CICDRoute {
 	}
 
 	private def deleteGuestRoute(): Route = {
-		delete {
-			path("guests" / Segment) { name =>
+		path("guests" / Segment) { name =>
+			delete {
 				val maybeDelete = deleteGuest(name)
 				onSuccess(maybeDelete) {
 					case true => complete(StatusCodes.NoContent)
@@ -79,5 +79,22 @@ class GuestBook extends CICDRoute {
 			found.foreach(f => guests -= f)
 			Future.successful(true)
 		}
+	}
+
+	private def clearRoute(): Route = {
+		path("clear") {
+			delete {
+				val maybeClear = clearGuests()
+				onSuccess(maybeClear) {
+					case true => complete(StatusCodes.NoContent)
+					case false => complete(StatusCodes.InternalServerError)
+				}
+			}
+		}
+	}
+
+	private def clearGuests(): Future[Boolean] = {
+		guests.clear()
+		Future.successful(true)
 	}
 }
