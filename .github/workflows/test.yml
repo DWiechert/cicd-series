@@ -102,7 +102,7 @@ jobs:
         run: ls -al
 
       - name: Change Directory
-        run: cd terraform/
+        run: cd terraform
 
       - name: List Files
         run: ls -al
