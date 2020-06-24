@@ -98,8 +98,14 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
+      - name: List Files
+        run: ls -al
+
       - name: Change Directory
         run: cd terraform/
+
+      - name: List Files
+        run: ls -al
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1

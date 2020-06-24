@@ -4,3 +4,4 @@ target/
 *.iml
 project/target/
 *.jar
+terraform/.terraform
