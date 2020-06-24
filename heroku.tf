@@ -10,21 +10,11 @@ terraform {
  }
 }
 
-resource "null_resource" "terraform-github-actions" {
- triggers = {
-   value = "This resource was created using GitHub Actions!"
- }
+provider "heroku" {
+  version = "~> 2.0"
 }
 
-//resource "heroku_app" "guestbook" {
-//  name   = "guestbook"
-//  region = "us"
-//
-//  config_vars = {
-//    FOOBAR = "baz"
-//  }
-//
-//  buildpacks = [
-//    "heroku/go"
-//  ]
-//}
+resource "heroku_app" "guestbook" {
+  name   = "guestbook"
+  region = "us"
+}
