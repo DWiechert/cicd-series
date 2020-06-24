@@ -5,3 +5,5 @@ target/
 project/target/
 *.jar
 .terraform/
+*.tfstate
+*.tfstate.backup
