@@ -1,0 +1,1 @@
+web: java -jar target/scala-2.13/cicd-series-assembly-*.jar

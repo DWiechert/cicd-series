@@ -1,14 +1,14 @@
 # Example copied from - https://www.terraform.io/docs/github-actions/setup-terraform.html
 
-terraform {
- backend "remote" {
-   organization = "cicd-series"
-
-   workspaces {
-     name = "heroku-prod"
-   }
- }
-}
+//terraform {
+// backend "remote" {
+//   organization = "cicd-series"
+//
+//   workspaces {
+//     name = "heroku-prod"
+//   }
+// }
+//}
 
 provider "heroku" {
   version = "~> 2.0"
@@ -22,11 +22,10 @@ resource "heroku_app" "guestbook_app" {
 # Build code & release to the app
 resource "heroku_build" "guestbook_build" {
   app = heroku_app.guestbook_app.name
-  buildpacks = ["https://github.com/heroku/heroku-buildpack-jvm-common.git"]
+  buildpacks = ["https://github.com/heroku/heroku-buildpack-scala"]
 
   source = {
-    path = "target/scala-2.13/cicd-series-assembly-0.1.0-SNAPSHOT.jar"
-    version = "2.1.1"
+    url = "https://github.com/DWiechert/cicd-series/archive/0.0.1.tar.gz"
   }
 }
 
