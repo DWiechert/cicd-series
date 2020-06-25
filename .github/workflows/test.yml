@@ -106,15 +106,19 @@ jobs:
           cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
 
       - name: Terraform Init
+        id: init
         run: terraform init
 
       - name: Terraform Validate
+        id: validate
         run: terraform validate
 
       - name: Terraform Plan
+        id: plan
         run: terraform plan
 
       - name: Terraform Report
+        id: report
         uses: actions/github-script@0.9.0
         if: github.event_name == 'pull_request'
         env:
