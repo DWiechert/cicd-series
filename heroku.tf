@@ -30,15 +30,15 @@ resource "heroku_build" "guestbook_build" {
 }
 
 # Launch the app's web process by scaling-up
-resource "heroku_formation" "example" {
+resource "heroku_formation" "guestbook_formation" {
   depends_on = [heroku_build.guestbook_build]
 
   app        = heroku_app.guestbook_app.name
   type       = "web"
   quantity   = 1
-  size       = "Standard-1x"
+  size       = "free"
 }
 
-output "example_app_url" {
+output "guestbook_url" {
   value = "https://${heroku_app.guestbook_app.name}.herokuapp.com"
 }
