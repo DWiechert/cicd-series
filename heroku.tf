@@ -14,6 +14,10 @@ provider "heroku" {
   version = "~> 2.0"
 }
 
+variable "build_url" {
+  type = string
+}
+
 resource "heroku_app" "guestbook_app" {
   name   = "cicd-series-guestbook"
   region = "us"
@@ -25,7 +29,7 @@ resource "heroku_build" "guestbook_build" {
   buildpacks = ["https://github.com/heroku/heroku-buildpack-scala"]
 
   source = {
-    url = "https://github.com/DWiechert/cicd-series/archive/0.0.1.tar.gz"
+    url = var.build_url
   }
 }
 

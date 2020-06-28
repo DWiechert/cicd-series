@@ -115,7 +115,9 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -no-color
+        run: |
+          export TF_VAR_build_url="https://github.com/DWiechert/cicd-series/archive/0.0.1.tar.gz"
+          terraform plan -no-color
 
       - name: Terraform Report
         id: report
