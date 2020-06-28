@@ -44,7 +44,7 @@ jobs:
 
       # Assembly artifact
       - name: Create Assembly
-        run: sbt "clean;compile;assembly"
+        run: sbt stage
 
       # Upload jar as build artifact
       - name: Upload Artifact
@@ -113,10 +113,11 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
+      # The build_url is blank for planning since we will create a new URL upon commits
       - name: Terraform Plan
         id: plan
         run: |
-          export TF_VAR_build_url="https://github.com/DWiechert/cicd-series/archive/0.0.1.tar.gz"
+          export TF_VAR_build_url=""
           terraform plan -no-color
 
       - name: Terraform Report
