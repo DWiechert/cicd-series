@@ -27,3 +27,5 @@ lazy val root = (project in file(".")).
     // Ignore tests when running the "assembly" task
     test in assembly := {}
   )
+
+addCommandAlias("stage", "clean;compile;assembly")

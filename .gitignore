@@ -4,3 +4,6 @@ target/
 *.iml
 project/target/
 *.jar
+.terraform/
+*.tfstate
+*.tfstate.backup
