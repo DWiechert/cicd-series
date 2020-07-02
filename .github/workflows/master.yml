@@ -30,20 +30,34 @@ jobs:
 
       - name: Create Version File
         run: |
-          echo "Release URL:"
           export RELEASE_URL=${{ steps.release.outputs.html_url }}
+          echo "Release URL:"
           echo ${RELEASE_URL}
+          echo ${RELEASE_URL} >> release.txt
 
-  get_output:
+      # Upload version file as build artifact
+      - name: Upload Version File
+        uses: actions/upload-artifact@v2
+        with:
+          name: release.txt
+          path: release.txt
+
+  get_release:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
 
-      - name: Create Version File
+      # Download artifact
+      - name: Download Version File
+        uses: actions/download-artifact@v2
+        with:
+          name: release.txt
+
+      - name: Read Version Rile
         run: |
+          export RELEASE_URL=$(cat release.txt)
           echo "Release URL:"
-          export RELEASE_URL=${{ steps.release.outputs.html_url }}
           echo ${RELEASE_URL}
 
 #  deploy:
