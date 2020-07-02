@@ -113,11 +113,11 @@ jobs:
         id: validate
         run: terraform validate -no-color
 
-      # The build_url is blank for planning since we will create a new URL upon commits
+      # Give default URL so the plan works, however this version will not be deployed
       - name: Terraform Plan
         id: plan
         run: |
-          export TF_VAR_build_url=""
+          export TF_VAR_build_url="https://github.com/DWiechert/cicd-series/releases/tag/0.0.1"
           terraform plan -no-color
 
       - name: Terraform Report

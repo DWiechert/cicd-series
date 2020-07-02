@@ -24,14 +24,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: 0.1.0-${{ github.ref }}
-          release_name: Release 0.1.0-${{ github.ref }}
+          release_name: Release 0.1.0-${GITHUB_RUN_NUMBER}
           draft: false
           prerelease: false
 
       - name: Create Version File
         run: |
           echo "Release URL:"
-          echo ${{ steps.release.html_url }}
+          export RELEASE_URL=${{ steps.release.outputs.html_url }}
+          echo ${RELEASE_URL}
 
 #  deploy:
 #    runs-on: ubuntu-latest
