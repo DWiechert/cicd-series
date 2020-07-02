@@ -1,6 +1,6 @@
-name: Test CI
+name: Pull Requests CI
 
-# Run tests on pull requests to master branch
+# Run on pull requests to master branch
 on:
   pull_request:
     branches:

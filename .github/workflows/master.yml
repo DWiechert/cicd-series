@@ -1,0 +1,66 @@
+name: Master CI
+
+# Run on pushes to master branch
+on:
+#  push:
+#    branches:
+#      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Create Release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: 0.1.0-${{ github.ref }}
+          release_name: Release 0.1.0-${{ github.ref }}
+          draft: false
+          prerelease: false
+
+      - name: Create Version File
+        run: |
+          echo "Release URL:"
+          echo ${{ steps.release.html_url }}
+
+#  deploy:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout Repo
+#        uses: actions/checkout@v2
+#
+#      - name: Setup Terraform
+#        uses: hashicorp/setup-terraform@v1
+#        with:
+#          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+#
+#      - name: Terraform Init
+#        id: init
+#        run: terraform init
+#
+#      - name: Terraform Validate
+#        id: validate
+#        run: terraform validate -no-color
+#
+#      # The build_url is blank for planning since we will create a new URL upon commits
+#      - name: Terraform Plan
+#        id: plan
+#        run: |
+#          export TF_VAR_build_url=""
+#          terraform plan -no-color
+#
+#      - name: Terraform Apply
+#        id: apply
+#        run: |
+#          export TF_VAR_build_url=""
+#          terraform apply -auto-approve -no-color
