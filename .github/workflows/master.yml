@@ -31,6 +31,7 @@ jobs:
       - name: Create Version File
         run: |
           export RELEASE_URL=${{ steps.release.outputs.html_url }}
+          RELEASE_URL+=".tar.gz"
           echo "Release URL:"
           echo ${RELEASE_URL}
           echo ${RELEASE_URL} >> release.txt
