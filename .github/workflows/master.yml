@@ -81,6 +81,8 @@ jobs:
           export TF_VAR_build_url=$(cat archive.txt)
           echo "Archive URL:"
           echo ${TF_VAR_build_url}
+          export HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }}
+          export HEROKU_EMAIL=${{ secrets.HEROKU_EMAIL }}
           terraform plan -no-color
 
       - name: Terraform Apply

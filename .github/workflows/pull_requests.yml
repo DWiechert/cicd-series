@@ -118,6 +118,8 @@ jobs:
         id: plan
         run: |
           export TF_VAR_build_url="https://github.com/DWiechert/cicd-series/releases/tag/0.0.1.tar.gz"
+          export HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }}
+          export HEROKU_EMAIL=${{ secrets.HEROKU_EMAIL }}
           terraform plan -no-color
 
       - name: Terraform Report
