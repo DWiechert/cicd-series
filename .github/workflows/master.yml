@@ -73,7 +73,9 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          export TF_VAR_build_url=""
+          export TF_VAR_build_url=$(cat release.txt)
+          echo "Release URL:"
+          echo ${TF_VAR_build_url}
           terraform plan -no-color
 
       - name: Terraform Apply
