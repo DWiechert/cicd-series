@@ -34,6 +34,18 @@ jobs:
           export RELEASE_URL=${{ steps.release.outputs.html_url }}
           echo ${RELEASE_URL}
 
+  get_output:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Create Version File
+        run: |
+          echo "Release URL:"
+          export RELEASE_URL=${{ steps.release.outputs.html_url }}
+          echo ${RELEASE_URL}
+
 #  deploy:
 #    runs-on: ubuntu-latest
 #    steps:
