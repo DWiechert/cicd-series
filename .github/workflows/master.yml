@@ -28,6 +28,7 @@ jobs:
           draft: false
           prerelease: false
 
+      # Heroku needs the .tar.gz URL so modify tag URL to expected format
       - name: Create Version File
         run: |
           export RELEASE_URL=${{ steps.release.outputs.html_url }}
