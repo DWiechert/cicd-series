@@ -34,14 +34,17 @@ jobs:
           RELEASE_URL+=".tar.gz"
           echo "Release URL:"
           echo ${RELEASE_URL}
-          echo ${RELEASE_URL} >> release.txt
+          export ARCHIVE_URL=$(echo "$RELEASE_URL" | sed 's~releases/tag~archive~')
+          echo "Archive URL:"
+          echo ${ARCHIVE_URL}
+          echo ${ARCHIVE_URL} >> archive.txt
 
       # Upload version file as build artifact
       - name: Upload Version File
         uses: actions/upload-artifact@v2
         with:
-          name: release.txt
-          path: release.txt
+          name: archive.txt
+          path: archive.txt
 
   deploy:
     runs-on: ubuntu-latest
@@ -55,7 +58,7 @@ jobs:
       - name: Download Version File
         uses: actions/download-artifact@v2
         with:
-          name: release.txt
+          name: archive.txt
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v1
@@ -74,16 +77,16 @@ jobs:
       - name: Terraform Plan
         id: plan
         run: |
-          export TF_VAR_build_url=$(cat release.txt)
-          echo "Release URL:"
+          export TF_VAR_build_url=$(cat archive.txt)
+          echo "Archive URL:"
           echo ${TF_VAR_build_url}
           terraform plan -no-color
 
       - name: Terraform Apply
         id: apply
         run: |
-          export TF_VAR_build_url=$(cat release.txt)
-          echo "Release URL:"
+          export TF_VAR_build_url=$(cat archive.txt)
+          echo "Archive URL:"
           echo ${TF_VAR_build_url}
           export HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }}
           export HEROKU_EMAIL=${{ secrets.HEROKU_EMAIL }}
