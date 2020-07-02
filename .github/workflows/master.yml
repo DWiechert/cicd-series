@@ -84,4 +84,6 @@ jobs:
           export TF_VAR_build_url=$(cat release.txt)
           echo "Release URL:"
           echo ${TF_VAR_build_url}
+          export HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }}
+          export HEROKU_EMAIL=${{ secrets.HEROKU_EMAIL }}
           terraform apply -auto-approve -no-color
