@@ -1,0 +1,93 @@
+name: Master CI
+
+# Run on pushes to master branch
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      - name: Create Release
+        id: release
+        uses: actions/create-release@v1
+        env:
+          # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: 0.1.0-${{ github.run_number }}
+          release_name: Release 0.1.0-${{ github.run_number }}
+          draft: false
+          prerelease: false
+
+      # Heroku needs the .tar.gz URL so modify tag URL to expected format
+      - name: Create Version File
+        run: |
+          export RELEASE_URL=${{ steps.release.outputs.html_url }}
+          RELEASE_URL+=".tar.gz"
+          echo "Release URL:"
+          echo ${RELEASE_URL}
+          export ARCHIVE_URL=$(echo "$RELEASE_URL" | sed 's~releases/tag~archive~')
+          echo "Archive URL:"
+          echo ${ARCHIVE_URL}
+          echo ${ARCHIVE_URL} >> archive.txt
+
+      # Upload version file as build artifact
+      - name: Upload Version File
+        uses: actions/upload-artifact@v2
+        with:
+          name: archive.txt
+          path: archive.txt
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: create_release
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+
+      # Download artifact
+      - name: Download Version File
+        uses: actions/download-artifact@v2
+        with:
+          name: archive.txt
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v1
+        with:
+          cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate -no-color
+
+      # The build_url is blank for planning since we will create a new URL upon commits
+      - name: Terraform Plan
+        id: plan
+        run: |
+          export TF_VAR_build_url=$(cat archive.txt)
+          echo "Archive URL:"
+          echo ${TF_VAR_build_url}
+          export HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }}
+          export HEROKU_EMAIL=${{ secrets.HEROKU_EMAIL }}
+          terraform plan -no-color
+
+      - name: Terraform Apply
+        id: apply
+        run: |
+          export TF_VAR_build_url=$(cat archive.txt)
+          echo "Archive URL:"
+          echo ${TF_VAR_build_url}
+          export HEROKU_API_KEY=${{ secrets.HEROKU_API_KEY }}
+          export HEROKU_EMAIL=${{ secrets.HEROKU_EMAIL }}
+          terraform apply -auto-approve -no-color
