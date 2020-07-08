@@ -2,10 +2,10 @@
 
 terraform {
  backend "remote" {
-   organization = "cicd-series"
+   organization = "<change to your Terraform Cloud org>"
 
    workspaces {
-     name = "heroku-prod"
+     name = "<change to your Terraform Cloud workspace>"
    }
  }
 }
@@ -19,7 +19,7 @@ variable "build_url" {
 }
 
 resource "heroku_app" "guestbook_app" {
-  name   = "cicd-series-guestbook"
+  name   = "<change to your Herkou app name>"
   region = "us"
 }
 
